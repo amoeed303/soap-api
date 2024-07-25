@@ -103,7 +103,7 @@
     <div class="book-list">
         <g:each in="${books}" var="book">
             <div class="book-card">
-                <img src="${createLink(controller: 'book', action: 'showImage', id: book.id)}" alt="${book.title}" class="book-image" />
+               <!-- <img src="${createLink(controller: 'book', action: 'showImage', id: book.id)}" alt="${book.title}" class="book-image" /> -->
                 <div class="book-details">
                     <h2>${book.title}</h2>
                     <p>Author: ${book.author}</p>

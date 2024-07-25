@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="http://schemas.ericsson.com/vas/" targetNamespace="http://schemas.ericsson.com/vas/">
+
+    <wsdl:types>
+        <xs:schema targetNamespace="http://schemas.ericsson.com/vas/">
+            <xs:include schemaLocation="book.xsd"/>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="GetBookRequestMessage">
+        <wsdl:part name="GetBookRequest" element="tns:GetBookRequest"/>
+    </wsdl:message>
+    <wsdl:message name="GetBookResponseMessage">
+        <wsdl:part name="GetBookResponse" element="tns:GetBookResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="SaveBookRequestMessage">
+        <wsdl:part name="SaveBookRequest" element="tns:SaveBookRequest"/>
+    </wsdl:message>
+    <wsdl:message name="SaveBookResponseMessage">
+        <wsdl:part name="SaveBookResponse" element="tns:SaveBookResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="UpdateBookRequestMessage">
+        <wsdl:part name="UpdateBookRequest" element="tns:UpdateBookRequest"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateBookResponseMessage">
+        <wsdl:part name="UpdateBookResponse" element="tns:UpdateBookResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="DeleteBookRequestMessage">
+        <wsdl:part name="DeleteBookRequest" element="tns:DeleteBookRequest"/>
+    </wsdl:message>
+    <wsdl:message name="DeleteBookResponseMessage">
+        <wsdl:part name="DeleteBookResponse" element="tns:DeleteBookResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="BookServicePortType">
+        <wsdl:operation name="getBook">
+            <wsdl:input message="tns:GetBookRequestMessage"/>
+            <wsdl:output message="tns:GetBookResponseMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="saveBook">
+            <wsdl:input message="tns:SaveBookRequestMessage"/>
+            <wsdl:output message="tns:SaveBookResponseMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="updateBook">
+            <wsdl:input message="tns:UpdateBookRequestMessage"/>
+            <wsdl:output message="tns:UpdateBookResponseMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="deleteBook">
+            <wsdl:input message="tns:DeleteBookRequestMessage"/>
+            <wsdl:output message="tns:DeleteBookResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="BookServiceBinding" type="tns:BookServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="saveBook">
+            <!--            <soap:operation soapAction="http://localhost:8080/bookService/saveBook"/>-->
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getBook">
+            <!--        <soap:operation soapAction="http://localhost:8080/bookService/getBook"/>-->
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updateBook">
+            <!--            <soap:operation soapAction="http://localhost:8080/bookService/updateBook"/>-->
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="deleteBook">
+            <!--            <soap:operation soapAction="http://localhost:8080/bookService/deleteBook"/>-->
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="book">
+        <wsdl:port name="BookServicePort" binding="tns:BookServiceBinding">
+            <soap:address location="http://localhost:8080/book"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

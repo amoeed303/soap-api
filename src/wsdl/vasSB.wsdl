@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:tns="http://schemas.ericsson.com/vas/" targetNamespace="http://schemas.ericsson.com/vas/">
+
+    <wsdl:types>
+        <xs:schema targetNamespace="http://schemas.ericsson.com/vas/">
+            <xs:include schemaLocation="vas.xsd"/>
+        </xs:schema>
+    </wsdl:types>
+
+    <wsdl:message name="VasSoapIn">
+        <wsdl:part name="parameters" element="tns:vasRequest"/>
+    </wsdl:message>
+
+    <wsdl:message name="VasSoapOut">
+        <wsdl:part name="parameters" element="tns:vasResponse"/>
+    </wsdl:message>
+
+
+    <wsdl:portType name="VasPortType">
+
+        <wsdl:operation name="setVas">
+            <wsdl:input message="tns:VasSoapIn"/>
+            <wsdl:output message="tns:VasSoapOut"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="VasSoapBinding" type="tns:VasPortType">
+
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <wsdl:operation name="setVas">
+
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="vas">
+        <wsdl:documentation>VAS System Provisioning Service</wsdl:documentation>
+        <wsdl:port name="VasPort" binding="tns:VasSoapBinding">
+            <soap:address location="http://localhost:8080/soapi"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

@@ -32,6 +32,8 @@ grails:
        maxFileSize: 10000000
        maxRequestSize: 10000000
        location: 'C:/Users/amoee/Desktop/soap_crud/uploads'
+
+
     mime:
         disable:
             accept:
@@ -88,6 +90,17 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
+#cxf:
+#    endpoint:
+#        BookServiceSoap:
+#          address: 'http://localhost:8080/services/BookServiceSoap'
+#          bean: 'BookServiceSoap'
+#    wsdl:
+#        BookServiceSoap:
+#          wsdl: 'classpath:wsdl/BookSoapService.wsdl'
+
+
+
 endpoints:
     jmx:
         unique-names: true

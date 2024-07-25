@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://schemas.ericsson.com/vas/" attributeFormDefault="unqualified" elementFormDefault="qualified"
+           targetNamespace="http://schemas.ericsson.com/vas/">
+
+    <xs:complexType name="Book">
+        <xs:sequence>
+            <xs:element name="title" type="xs:string"/>
+            <xs:element name="author" type="xs:string"/>
+            <xs:element name="isbn" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="GetBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="GetBookResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title" type="xs:string"/>
+                <xs:element name="author" type="xs:string"/>
+                <xs:element name="isbn" type="xs:string"/>
+                <!-- Changed from type="xs:string" to type="Book" -->
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="SaveBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="title" type="xs:string"/>
+                <xs:element name="author" type="xs:string"/>
+                <xs:element name="isbn" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="SaveBookResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="UpdateBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="title" type="xs:string"/>
+                <xs:element name="author" type="xs:string"/>
+                <xs:element name="isbn" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="UpdateBookResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="xs:boolean"/>
+
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="DeleteBookRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="DeleteBookResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="result" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--Defined an element for Book and BookList-->
+    <xs:element name="Book" type="Book"/>
+
+
+</xs:schema>
