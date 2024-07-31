@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="responseCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="author" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="isbn" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -31,6 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+    "responseCode",
     "title",
     "author",
     "isbn"
@@ -39,11 +41,37 @@ import javax.xml.bind.annotation.XmlType;
 public class GetBookResponse {
 
     @XmlElement(required = true)
+    protected String responseCode;
+    @XmlElement(required = true)
     protected String title;
     @XmlElement(required = true)
     protected String author;
     @XmlElement(required = true)
     protected String isbn;
+
+    /**
+     * Gets the value of the responseCode property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    /**
+     * Sets the value of the responseCode property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setResponseCode(String value) {
+        this.responseCode = value;
+    }
 
     /**
      * Gets the value of the title property.

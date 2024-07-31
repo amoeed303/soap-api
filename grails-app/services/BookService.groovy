@@ -3,6 +3,8 @@ import com.ericsson.schemas.vas.DeleteBookRequest
 import com.ericsson.schemas.vas.DeleteBookResponse
 import com.ericsson.schemas.vas.GetBookRequest
 import com.ericsson.schemas.vas.GetBookResponse
+import com.ericsson.schemas.vas.ListBookRequest
+import com.ericsson.schemas.vas.ListBookResponse
 import com.ericsson.schemas.vas.SaveBookRequest
 import com.ericsson.schemas.vas.SaveBookResponse
 import com.ericsson.schemas.vas.UpdateBookRequest
@@ -14,7 +16,6 @@ import soap.crud.Book
 
 import javax.jws.WebParam
 
-
 @Transactional
 @GrailsCxfEndpoint()
 class BookService implements BookServicePortType {
@@ -22,7 +23,6 @@ class BookService implements BookServicePortType {
         return Book.list()
     }
 
-    /*
     def getBook(Long id) {
         def book = Book.get(id)
         if (!book) {
@@ -30,11 +30,7 @@ class BookService implements BookServicePortType {
         }
         return book
     }
-//
-//    def listBooks() {
-//        return Book.list()
-//    }
-@Override
+
     def saveBook(String title, String author, String isbn)//, MultiPartFile image
     {
 //        String imagePath = null
@@ -103,7 +99,20 @@ class BookService implements BookServicePortType {
         def book = Book.get(id)
         book.delete(flush: true)
     }
-*/
+
+    @Override
+    ListBookResponse listBooks(@WebParam(name = "ListBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "ListBookRequest") ListBookRequest listBookRequest) {
+        ListBookResponse response = new ListBookResponse()
+        Book.list().each { book ->
+            def bookResponse = new com.ericsson.schemas.vas.Book()
+            bookResponse.title = book.title
+            bookResponse.author = book.author
+            bookResponse.isbn = book.isbn
+            response.responseCode = 200
+            response.bookList.add(bookResponse)
+        }
+        return response
+    }
 
     @Override
     SaveBookResponse saveBook(@WebParam(name = "SaveBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "SaveBookRequest") SaveBookRequest saveBookRequest) {
@@ -111,9 +120,11 @@ class BookService implements BookServicePortType {
         Book book = new Book(title: saveBookRequest.title, author: saveBookRequest.author, isbn: saveBookRequest.isbn)
         if (book.save(flush: true)) {
             response.result = true
+            response.responseCode = 200
             return response
         } else {
             response.result = false
+            response.responseCode = 500
             return response
         }
     }
@@ -122,6 +133,10 @@ class BookService implements BookServicePortType {
     GetBookResponse getBook(@WebParam(name = "GetBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "GetBookRequest") GetBookRequest getBookRequest) {
         GetBookResponse response = new GetBookResponse()
         Book book = Book.get(getBookRequest.id)
+        if (!book) {
+            return response.responseCode = 404
+        }
+        response.responseCode = 200
         response.title = book.title
         response.author = book.author
         response.isbn = book.isbn
@@ -133,7 +148,9 @@ class BookService implements BookServicePortType {
         UpdateBookResponse response = new UpdateBookResponse()
         Book book = Book.get(updateBookRequest.id)
         if (!book) {
-            return response.result = false
+            response.result = false
+            response.responseCode = 404
+            return response
         }
         if (updateBookRequest.title && updateBookRequest.author && updateBookRequest.isbn) {
             book.title = updateBookRequest.title
@@ -141,9 +158,11 @@ class BookService implements BookServicePortType {
             book.isbn = updateBookRequest.isbn
             if (book.save(flush: true)) {
                 response.result = true
+                response.responseCode = 200
                 return response
             } else {
                 response.result = false
+                response.responseCode = 500
                 return response
             }
         }
@@ -156,9 +175,11 @@ class BookService implements BookServicePortType {
         if (book) {
             book.delete(flush: true)
             response.result = true
+            response.responseCode = 200
             return response
         } else {
             response.result = false
+            response.responseCode = 404
             return response
         }
     }

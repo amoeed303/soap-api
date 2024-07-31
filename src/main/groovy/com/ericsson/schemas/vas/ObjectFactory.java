@@ -90,11 +90,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ListBookRequest }
+     * 
+     */
+    public ListBookRequest createListBookRequest() {
+        return new ListBookRequest();
+    }
+
+    /**
      * Create an instance of {@link SaveBookRequest }
      * 
      */
     public SaveBookRequest createSaveBookRequest() {
         return new SaveBookRequest();
+    }
+
+    /**
+     * Create an instance of {@link ListBookResponse }
+     * 
+     */
+    public ListBookResponse createListBookResponse() {
+        return new ListBookResponse();
     }
 
     /**

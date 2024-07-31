@@ -25,6 +25,18 @@ public interface BookServicePortType {
 
     /**
      * 
+     * @param listBookRequest
+     * @return
+     *     returns com.ericsson.schemas.vas.ListBookResponse
+     */
+    @WebMethod
+    @WebResult(name = "ListBookResponse", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "ListBookResponse")
+    public ListBookResponse listBooks(
+        @WebParam(name = "ListBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "ListBookRequest")
+        ListBookRequest listBookRequest);
+
+    /**
+     * 
      * @param saveBookRequest
      * @return
      *     returns com.ericsson.schemas.vas.SaveBookResponse

@@ -3,6 +3,7 @@ package com.ericsson.schemas.vas;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -17,6 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="responseCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -28,12 +30,39 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
+    "responseCode",
     "result"
 })
 @XmlRootElement(name = "SaveBookResponse")
 public class SaveBookResponse {
 
+    @XmlElement(required = true)
+    protected String responseCode;
     protected boolean result;
+
+    /**
+     * Gets the value of the responseCode property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    /**
+     * Sets the value of the responseCode property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setResponseCode(String value) {
+        this.responseCode = value;
+    }
 
     /**
      * Gets the value of the result property.

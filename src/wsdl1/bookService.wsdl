@@ -12,27 +12,30 @@
         </xs:schema>
     </wsdl:types>
 
+    <wsdl:message name="ListBookRequestMessage">
+        <wsdl:part name="ListBookRequest" element="tns:ListBookRequest"/>
+    </wsdl:message>
+    <wsdl:message name="ListBookResponseMessage">
+        <wsdl:part name="ListBookResponse" element="tns:ListBookResponse"/>
+    </wsdl:message>
     <wsdl:message name="GetBookRequestMessage">
         <wsdl:part name="GetBookRequest" element="tns:GetBookRequest"/>
     </wsdl:message>
     <wsdl:message name="GetBookResponseMessage">
         <wsdl:part name="GetBookResponse" element="tns:GetBookResponse"/>
     </wsdl:message>
-
     <wsdl:message name="SaveBookRequestMessage">
         <wsdl:part name="SaveBookRequest" element="tns:SaveBookRequest"/>
     </wsdl:message>
     <wsdl:message name="SaveBookResponseMessage">
         <wsdl:part name="SaveBookResponse" element="tns:SaveBookResponse"/>
     </wsdl:message>
-
     <wsdl:message name="UpdateBookRequestMessage">
         <wsdl:part name="UpdateBookRequest" element="tns:UpdateBookRequest"/>
     </wsdl:message>
     <wsdl:message name="UpdateBookResponseMessage">
         <wsdl:part name="UpdateBookResponse" element="tns:UpdateBookResponse"/>
     </wsdl:message>
-
     <wsdl:message name="DeleteBookRequestMessage">
         <wsdl:part name="DeleteBookRequest" element="tns:DeleteBookRequest"/>
     </wsdl:message>
@@ -41,6 +44,10 @@
     </wsdl:message>
 
     <wsdl:portType name="BookServicePortType">
+        <wsdl:operation name="listBooks">
+            <wsdl:input message="tns:ListBookRequestMessage"/>
+            <wsdl:output message="tns:ListBookResponseMessage"/>
+        </wsdl:operation>
         <wsdl:operation name="getBook">
             <wsdl:input message="tns:GetBookRequestMessage"/>
             <wsdl:output message="tns:GetBookResponseMessage"/>
@@ -60,9 +67,16 @@
     </wsdl:portType>
     <wsdl:binding name="BookServiceBinding" type="tns:BookServicePortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-
+        <wsdl:operation name="listBooks">
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
         <wsdl:operation name="saveBook">
-            <!--            <soap:operation soapAction="http://localhost:8080/bookService/saveBook"/>-->
+            <!--            <soap:operation soapAction="http://localhost:8080/book/saveBook"/>-->
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -71,7 +85,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="getBook">
-            <!--        <soap:operation soapAction="http://localhost:8080/bookService/getBook"/>-->
+            <!--        <soap:operation soapAction="http://localhost:8080/book/getBook"/>-->
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -80,7 +94,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="updateBook">
-            <!--            <soap:operation soapAction="http://localhost:8080/bookService/updateBook"/>-->
+            <!--            <soap:operation soapAction="http://localhost:8080/book/updateBook"/>-->
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -89,7 +103,7 @@
             </wsdl:output>
         </wsdl:operation>
         <wsdl:operation name="deleteBook">
-            <!--            <soap:operation soapAction="http://localhost:8080/bookService/deleteBook"/>-->
+            <!--            <soap:operation soapAction="http://localhost:8080/book/deleteBook"/>-->
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
