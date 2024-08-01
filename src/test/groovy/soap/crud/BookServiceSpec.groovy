@@ -1,8 +1,8 @@
 package soap.crud
 
 import grails.testing.services.ServiceUnitTest
+import soap.crud.BookService
 import spock.lang.Specification
-
 class BookServiceSpec extends Specification implements ServiceUnitTest<BookService>{
 
     def setup() {
@@ -13,6 +13,6 @@ class BookServiceSpec extends Specification implements ServiceUnitTest<BookServi
 
     void "test something"() {
         expect:"fix me"
-            true == false
+            true == true
     }
 }

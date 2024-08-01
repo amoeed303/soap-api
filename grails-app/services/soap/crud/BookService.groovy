@@ -1,3 +1,5 @@
+package soap.crud
+
 import com.ericsson.schemas.vas.BookServicePortType
 import com.ericsson.schemas.vas.DeleteBookRequest
 import com.ericsson.schemas.vas.DeleteBookResponse
@@ -10,15 +12,26 @@ import com.ericsson.schemas.vas.SaveBookResponse
 import com.ericsson.schemas.vas.UpdateBookRequest
 import com.ericsson.schemas.vas.UpdateBookResponse
 import grails.gorm.transactions.Transactional
+import org.apache.cxf.interceptor.InInterceptors
+import org.apache.cxf.jaxws.JaxWsServerFactoryBean
 import org.grails.cxf.utils.GrailsCxfEndpoint
 import org.springframework.web.multipart.MultipartFile
-import soap.crud.Book
-
 import javax.jws.WebParam
 
-@Transactional
+@InInterceptors(classes = WSSecurityInterceptor.class)
 @GrailsCxfEndpoint()
+@Transactional
 class BookService implements BookServicePortType {
+
+    BookService() {
+        JaxWsServerFactoryBean factory = new JaxWsServerFactoryBean()
+        factory.serviceBean = this
+        factory.address = "/book"
+        factory.serviceClass = BookServicePortType
+        factory.getInInterceptors().add(new WSSecurityInterceptor())
+        factory.create()
+    }
+
     def listBooks() {
         return Book.list()
     }
@@ -103,65 +116,48 @@ class BookService implements BookServicePortType {
     @Override
     ListBookResponse listBooks(@WebParam(name = "ListBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "ListBookRequest") ListBookRequest listBookRequest) {
         ListBookResponse response = new ListBookResponse()
-        Book.list().each { book ->
-            def bookResponse = new com.ericsson.schemas.vas.Book()
-            bookResponse.title = book.title
-            bookResponse.author = book.author
-            bookResponse.isbn = book.isbn
+        def books = Book.list()
+        if (books.size() == 0) {
+            response.responseCode = 404
+            return response
+        } else {
+            response.bookList = new com.ericsson.schemas.vas.BookList()
+            books.each { bookElement ->
+                def book = new com.ericsson.schemas.vas.Book()
+                book.title = bookElement.title
+                book.author = bookElement.author
+                book.isbn = bookElement.isbn
+
+                response.bookList.book.add(book)
+            }
             response.responseCode = 200
-            response.bookList.add(bookResponse)
+            return response
         }
-        return response
     }
 
     @Override
     SaveBookResponse saveBook(@WebParam(name = "SaveBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "SaveBookRequest") SaveBookRequest saveBookRequest) {
         SaveBookResponse response = new SaveBookResponse()
-        Book book = new Book(title: saveBookRequest.title, author: saveBookRequest.author, isbn: saveBookRequest.isbn)
-        if (book.save(flush: true)) {
-            response.result = true
-            response.responseCode = 200
+        if (!saveBookRequest.title || !saveBookRequest.author || !saveBookRequest.isbn) {
+            response.result = "Insufficient parameters provided"
+            response.responseCode = 400
+            return response
+        } else if (Book.findByTitle(saveBookRequest.title)) {
+            response.result = "Book with title already exists"
+            response.responseCode = 409
+            return response
+        } else if (Book.findByIsbn(saveBookRequest.isbn)) {
+            response.result = "Book with ISBN already exists"
+            response.responseCode = 409
             return response
         } else {
-            response.result = false
-            response.responseCode = 500
-            return response
-        }
-    }
-
-    @Override
-    GetBookResponse getBook(@WebParam(name = "GetBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "GetBookRequest") GetBookRequest getBookRequest) {
-        GetBookResponse response = new GetBookResponse()
-        Book book = Book.get(getBookRequest.id)
-        if (!book) {
-            return response.responseCode = 404
-        }
-        response.responseCode = 200
-        response.title = book.title
-        response.author = book.author
-        response.isbn = book.isbn
-        return response
-    }
-
-    @Override
-    UpdateBookResponse updateBook(@WebParam(name = "UpdateBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "UpdateBookRequest") UpdateBookRequest updateBookRequest) {
-        UpdateBookResponse response = new UpdateBookResponse()
-        Book book = Book.get(updateBookRequest.id)
-        if (!book) {
-            response.result = false
-            response.responseCode = 404
-            return response
-        }
-        if (updateBookRequest.title && updateBookRequest.author && updateBookRequest.isbn) {
-            book.title = updateBookRequest.title
-            book.author = updateBookRequest.author
-            book.isbn = updateBookRequest.isbn
+            Book book = new Book(title: saveBookRequest.title, author: saveBookRequest.author, isbn: saveBookRequest.isbn)
             if (book.save(flush: true)) {
-                response.result = true
+                response.result = "Book saved successfully"
                 response.responseCode = 200
                 return response
             } else {
-                response.result = false
+                response.result = "Book save failed"
                 response.responseCode = 500
                 return response
             }
@@ -169,16 +165,88 @@ class BookService implements BookServicePortType {
     }
 
     @Override
+    GetBookResponse getBook(@WebParam(name = "GetBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "GetBookRequest") GetBookRequest getBookRequest) {
+        GetBookResponse response = new GetBookResponse()
+        if (!getBookRequest.id) {
+            response.responseCode = 400
+            response.result = "No ID provided"
+            return response
+        }
+        Book book = Book.get(getBookRequest.id)
+        if (!book) {
+            response.responseCode = "404"
+            response.result = "Book not found"
+            return response
+        }
+        def responseBook = new com.ericsson.schemas.vas.Book()
+        responseBook.title = book.title
+        responseBook.author = book.author
+        responseBook.isbn = book.isbn
+        response.book = responseBook
+        response.responseCode = 200
+        return response
+    }
+
+    @Override
+    UpdateBookResponse updateBook(@WebParam(name = "UpdateBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "UpdateBookRequest") UpdateBookRequest updateBookRequest) {
+        UpdateBookResponse response = new UpdateBookResponse()
+        if (!updateBookRequest.id) {
+            response.result = "No ID provided"
+            response.responseCode = 400
+            return response
+        }
+        Book book = Book.get(updateBookRequest.id)
+
+        if (!book) {
+            response.result = "Book not found"
+            response.responseCode = 404
+            return response
+        } else if (updateBookRequest.title && updateBookRequest.author && updateBookRequest.isbn) {
+            book.title = updateBookRequest.title
+            book.author = updateBookRequest.author
+            book.isbn = updateBookRequest.isbn
+            if (Book.findByTitle(updateBookRequest.title)) {
+                response.result = "Book with title already exists Cannot Update"
+                response.responseCode = 409
+                return response
+            } else if (Book.findByIsbn(updateBookRequest.isbn)) {
+                response.result = "Book with ISBN already exists Cannot Update"
+                response.responseCode = 409
+                return response
+            } else {
+                if (book.save(flush: true)) {
+                    response.result = "Book updated successfully"
+                    response.responseCode = 200
+                    return response
+                } else {
+                    response.result = "Book update failed"
+                    response.responseCode = 500
+                    return response
+                }
+            }
+        } else {
+            response.result = "Insufficient parameters provided"
+            response.responseCode = 400
+            return response
+        }
+    }
+
+    @Override
     DeleteBookResponse deleteBook(@WebParam(name = "DeleteBookRequest", targetNamespace = "http://schemas.ericsson.com/vas/", partName = "DeleteBookRequest") DeleteBookRequest deleteBookRequest) {
         DeleteBookResponse response = new DeleteBookResponse()
+        if (!deleteBookRequest.id) {
+            response.result = "No ID provided"
+            response.responseCode = "400"
+            return response
+        }
         Book book = Book.get(deleteBookRequest.id)
         if (book) {
             book.delete(flush: true)
-            response.result = true
+            response.result = "Book deleted Successfully"
             response.responseCode = 200
             return response
         } else {
-            response.result = false
+            response.result = "Book not found operation failed"
             response.responseCode = 404
             return response
         }

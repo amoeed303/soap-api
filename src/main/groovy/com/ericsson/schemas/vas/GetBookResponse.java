@@ -19,9 +19,8 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="responseCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="author" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="isbn" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="book" type="{http://schemas.ericsson.com/vas/}Book"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,9 +32,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "responseCode",
-    "title",
-    "author",
-    "isbn"
+    "result",
+    "book"
 })
 @XmlRootElement(name = "GetBookResponse")
 public class GetBookResponse {
@@ -43,11 +41,9 @@ public class GetBookResponse {
     @XmlElement(required = true)
     protected String responseCode;
     @XmlElement(required = true)
-    protected String title;
+    protected String result;
     @XmlElement(required = true)
-    protected String author;
-    @XmlElement(required = true)
-    protected String isbn;
+    protected Book book;
 
     /**
      * Gets the value of the responseCode property.
@@ -74,75 +70,51 @@ public class GetBookResponse {
     }
 
     /**
-     * Gets the value of the title property.
+     * Gets the value of the result property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getTitle() {
-        return title;
+    public String getResult() {
+        return result;
     }
 
     /**
-     * Sets the value of the title property.
+     * Sets the value of the result property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setTitle(String value) {
-        this.title = value;
+    public void setResult(String value) {
+        this.result = value;
     }
 
     /**
-     * Gets the value of the author property.
+     * Gets the value of the book property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Book }
      *     
      */
-    public String getAuthor() {
-        return author;
+    public Book getBook() {
+        return book;
     }
 
     /**
-     * Sets the value of the author property.
+     * Sets the value of the book property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Book }
      *     
      */
-    public void setAuthor(String value) {
-        this.author = value;
-    }
-
-    /**
-     * Gets the value of the isbn property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getIsbn() {
-        return isbn;
-    }
-
-    /**
-     * Sets the value of the isbn property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setIsbn(String value) {
-        this.isbn = value;
+    public void setBook(Book value) {
+        this.book = value;
     }
 
 }

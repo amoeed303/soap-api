@@ -1,4 +1,4 @@
-package soap.crud
+
 
 class UrlMappings {
 

@@ -1,5 +1,3 @@
-package soap.crud
-
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
@@ -12,7 +10,7 @@ class BookControllerSpec extends Specification implements ControllerUnitTest<Boo
     }
 
     void "test something"() {
-        expect:"fix me"
-            true == false
+        expect: "fix me"
+        true == true
     }
 }

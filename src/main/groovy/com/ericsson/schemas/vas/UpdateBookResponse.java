@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="responseCode" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="result" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,7 +38,8 @@ public class UpdateBookResponse {
 
     @XmlElement(required = true)
     protected String responseCode;
-    protected boolean result;
+    @XmlElement(required = true)
+    protected String result;
 
     /**
      * Gets the value of the responseCode property.
@@ -67,16 +68,24 @@ public class UpdateBookResponse {
     /**
      * Gets the value of the result property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public boolean isResult() {
+    public String getResult() {
         return result;
     }
 
     /**
      * Sets the value of the result property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setResult(boolean value) {
+    public void setResult(String value) {
         this.result = value;
     }
 

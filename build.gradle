@@ -51,6 +51,9 @@ dependencies {
     compile 'org.apache.cxf:cxf-rt-frontend-jaxws:3.4.5'
     compile 'org.apache.cxf:cxf-rt-frontend-simple:3.4.5'
     // some more dependencies
+    //Added dependencies apache cxf plugin
+    compile 'org.apache.cxf:cxf-rt-ws-security:3.4.5'
+    compile 'org.apache.wss4j:wss4j-ws-security-common:2.2.3'
     //end of my added dependencies
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"

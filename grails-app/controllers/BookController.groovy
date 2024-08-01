@@ -1,3 +1,5 @@
+import soap.crud.BookService
+
 class BookController {
     BookService bookService
 

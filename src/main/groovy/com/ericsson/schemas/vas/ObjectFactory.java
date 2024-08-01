@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _BookList_QNAME = new QName("http://schemas.ericsson.com/vas/", "bookList");
     private final static QName _Book_QNAME = new QName("http://schemas.ericsson.com/vas/", "Book");
 
     /**
@@ -58,19 +59,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UpdateBookRequest }
-     * 
-     */
-    public UpdateBookRequest createUpdateBookRequest() {
-        return new UpdateBookRequest();
-    }
-
-    /**
      * Create an instance of {@link Book }
      * 
      */
     public Book createBook() {
         return new Book();
+    }
+
+    /**
+     * Create an instance of {@link UpdateBookRequest }
+     * 
+     */
+    public UpdateBookRequest createUpdateBookRequest() {
+        return new UpdateBookRequest();
     }
 
     /**
@@ -114,11 +115,28 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link BookList }
+     * 
+     */
+    public BookList createBookList() {
+        return new BookList();
+    }
+
+    /**
      * Create an instance of {@link DeleteBookResponse }
      * 
      */
     public DeleteBookResponse createDeleteBookResponse() {
         return new DeleteBookResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link BookList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://schemas.ericsson.com/vas/", name = "bookList")
+    public JAXBElement<BookList> createBookList(BookList value) {
+        return new JAXBElement<BookList>(_BookList_QNAME, BookList.class, null, value);
     }
 
     /**

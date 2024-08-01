@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns="http://schemas.ericsson.com/vas/" attributeFormDefault="unqualified" elementFormDefault="qualified"
+
            targetNamespace="http://schemas.ericsson.com/vas/">
 
     <xs:complexType name="Book">
@@ -8,6 +9,11 @@
             <xs:element name="title" type="xs:string"/>
             <xs:element name="author" type="xs:string"/>
             <xs:element name="isbn" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="bookList">
+        <xs:sequence>
+            <xs:element name="book" type="Book" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -22,7 +28,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="responseCode" type="xs:string"/>
-                <xs:element name="bookList" type="Book" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="bookList" type="bookList"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -38,9 +44,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="responseCode" type="xs:string"/>
-                <xs:element name="title" type="xs:string"/>
-                <xs:element name="author" type="xs:string"/>
-                <xs:element name="isbn" type="xs:string"/>
+                <xs:element name="result" type="xs:string"/>
+                <xs:element name="book" type="Book"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -58,7 +63,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="responseCode" type="xs:string"/>
-                <xs:element name="result" type="xs:boolean"/>
+                <xs:element name="result" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -77,7 +82,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="responseCode" type="xs:string"/>
-                <xs:element name="result" type="xs:boolean"/>
+                <xs:element name="result" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -93,11 +98,12 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="responseCode" type="xs:string"/>
-                <xs:element name="result" type="xs:boolean"/>
+                <xs:element name="result" type="xs:string"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
     <xs:element name="Book" type="Book"/>
+    <xs:element name="bookList" type="bookList"/>
 
 </xs:schema>
